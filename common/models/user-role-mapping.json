@@ -1,0 +1,20 @@
+{
+  "name": "UserRoleMapping",
+  "base": "RoleMapping",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "strictObjectIDCoercion": true
+  },
+  "properties": {
+    "id": {
+      "type": "number",
+      "id": true,
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}

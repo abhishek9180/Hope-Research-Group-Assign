@@ -1,0 +1,90 @@
+{
+  "name": "users",
+  "plural": "users",
+  "base": "User",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true,
+    "strictObjectIDCoercion": true
+  },
+  "mixins": {
+    "DisableRemoteMethods": {
+      "expose": [
+        "find",
+        "findById",
+        "login",
+        "logout",
+        "prototype.__get__posts"
+      ]
+    }
+  },
+  "excludeBaseProperties": ["realm"],
+  "properties": {
+    "id": {
+      "type": "number",
+      "id": true,
+      "required": true
+    },
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "userLevel": {
+      "type": "string",
+      "required": true,
+      "default": "user"
+    },
+    "profilePic": {
+      "type": "buffer"
+    }
+  },
+  "validations": [],
+  "relations": {
+    "posts": {
+      "type": "hasMany",
+      "model": "post",
+      "foreignKey": "userId",
+      "options": {
+        "nestRemoting": true
+      }
+    }
+  },
+  "acls": [
+    {
+      "accessType": "*",
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "DENY"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$everyone",
+      "permission": "ALLOW",
+      "property": "login"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": "logout"
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "$owner",
+      "permission": "ALLOW",
+      "property": ["findById", "prototype.patchAttributes", "__get__posts"]
+    },
+    {
+      "principalType": "ROLE",
+      "principalId": "admin",
+      "permission": "ALLOW",
+      "property": [
+        "find",
+        "findById",
+        "prototype.patchAttributes",
+        "__get__posts"
+      ]
+    }
+  ],
+  "methods": {}
+}
